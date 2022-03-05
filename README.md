@@ -3,4 +3,4 @@
 
 
 #FLask Chat App
-##uses Socket io Lib with redis for session storage Geventlet for async and web socket communication channel
+##uses (Socket-io) Lib with (Redis) for session storage Geventlet for async and web socket communication channel
