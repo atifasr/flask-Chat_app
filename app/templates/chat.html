@@ -1,0 +1,79 @@
+
+{% extends 'index.html' %}
+
+    {% block content %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row m-2">
+                    <div class="col-md-6">
+                        <div class="card m-2 p-3">
+                            <div class="card-geader">
+                                <h2>Send something</h2>
+                            </div>
+                            <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <label for="">message</label>
+                                    <input type="text" name="" id="text_message" class="form-contorl m-2" value="">
+                                    <button class="btn btn-secondary m-2 send-btn">Send</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-2 mx-auto" style="overflow: scroll;max-height: 20vh ;">
+                        <table>
+                            <tr>
+                                <th style="font-weight: bolder;text-transform: capitalize;"> Live chat </th>
+                            </tr>
+                            <tbody class="t-body">
+                                <tr>
+                                    <td> 
+                                        <div class="row chat-container m-3">
+                                            <div class="col-md-12 p-1">
+
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}
+    
+
+
+
+{% block scripts %}
+
+        <script>
+            let input = document.querySelector('#text_message');
+            input.addEventListener("keyup", function(event) {
+                if (event.keyCode == 13) { 
+                    event.preventDefault();
+                    document.querySelector(".send-btn").click();
+    
+                    }
+            });
+    
+        document.querySelector('.send-btn').addEventListener('click',(e) => {
+            let text =  document.querySelector('#text_message').value;
+            
+            // $('.chat-container').append(
+            //     `<div class="col-md-12">${text}</div>`
+            // )
+            socket.emit('chat-message',{
+                room_no:'num_10',
+                message:text
+            })
+            
+    
+            
+        })
+        </script>
+
+{% endblock scripts %}
