@@ -20,6 +20,6 @@ app.config["SESSION_TYPE"] = "redis"
 
 Session(app)
 
-socketio = SocketIO(app,cors_allowed_origins='*',async_mode="gevent")
+socketio = SocketIO(app,cors_allowed_origins='*',async_mode="gevent",manage_session=False )
 
 from app import routes

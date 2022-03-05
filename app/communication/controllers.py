@@ -20,8 +20,8 @@ def chat_room():
     if request.method == "POST":
         params = dict(request.form)
         session['name'] = params.get('name')
-        session['room_no'] = params.get('room_number')
-
+        session['room_no'] = 'room_no_{}'.format(params.get('room_number'))
+        print(session.get('name'))
     return render_template('chat.html')
 
 
@@ -32,24 +32,28 @@ def chat_room():
 @socketio.on('message')
 def send_message(data):
 
-    room = str(data.get('room_no'))
+    room = session.get('room_no','room_no_13')
     message = data.get('message')
     timestamp = str(datetime.datetime.now())
     message = {
         'message':message,
-        'timestamp': timestamp
+        'timestamp': timestamp,
+        'room_no':room,
+        'ack':'done'
     }
 
     # join room
     join_room(room)
+    
     # send message in room
-    emit('message',message,to=room,broadcast=True)
+    emit('chat-message',message,to=room,broadcast=True)
 
 # On Chat message
 @socketio.on('chat-message')
 def chat_message(data):
     print('chat message received')
-    room = data.get('room_no')    
+    
+    room = session.get('room_no')    
     message = data.get('message')
     timestamp = str(datetime.datetime.now())
     message = {
@@ -60,5 +64,5 @@ def chat_message(data):
     print(message)
 
     # send message in room
-    emit('message',message,to=room,broadcast=True)
+    emit('chat-message',message,to=room,broadcast=True)
 

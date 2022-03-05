@@ -41,23 +41,33 @@
         var socket = io('http://127.0.0.1:8000/');
         
         socket.on('connect', function() {
-            let room_no = 'num_10'
+
+            
             socket.emit('message', {
-                room_no:room_no,
-                message:`connected to room ${room_no}`
+                message:`connected to network`
             });
-            console.log(`connected to room ${room_no}`)
+
+            console.log(`connected to network`)
         });
     
     
         socket.on('message', function(msg) {
-            console.log('message')
-    
-            $('.chat-container').prepend(
+            console.log(msg)
+            if (msg.ack == 'done')
+            {
+                message = `connect to room ${msg.room_no}`
+                $('.chat-container').prepend(
+                `<div class="col-md-12 chat-message">${message}</div> <small>${msg.timestamp}</small>`
+            )
+
+            }
+            else{
+                $('.chat-container').prepend(
                 `<div class="col-md-12 chat-message">${msg.message}</div> <small>${msg.timestamp}</small>`
             )
-    
-            console.log('message',typeof(msg))
+
+            }
+            
             document.querySelector('#text_message').value = '';
         });
     
